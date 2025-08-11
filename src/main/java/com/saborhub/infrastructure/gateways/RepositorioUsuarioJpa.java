@@ -18,14 +18,6 @@ public class RepositorioUsuarioJpa implements RepositorioUsuario {
     }
 
     @Override
-    public Usuario cadastrarUsuario(Usuario usuario) {
-        UsuarioEntity entity = mapper.toEntity(usuario);
-        repositorio.save(entity);
-
-        return mapper.toDomain(entity);
-    }
-
-    @Override
     public List<Usuario> listarTodos() {
         return repositorio
                 .findAll()
@@ -35,7 +27,7 @@ public class RepositorioUsuarioJpa implements RepositorioUsuario {
     }
 
     @Override
-    public Usuario obterUsuario(Long id) {
+    public Usuario obterUsuario(String id) {
         return repositorio.findById(id)
                 .map(mapper::toDomain)
                 .orElse(null);  

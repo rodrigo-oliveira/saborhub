@@ -3,7 +3,6 @@ package com.saborhub.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.saborhub.application.gateways.RepositorioUsuario;
-import com.saborhub.application.usecases.CriarUsuario;
 import com.saborhub.application.usecases.ListarUsuarios;
 import com.saborhub.application.usecases.ObterUsuario;
 import com.saborhub.infrastructure.gateways.RepositorioUsuarioJpa;
@@ -11,11 +10,10 @@ import com.saborhub.infrastructure.gateways.UsuarioEntityMapper;
 import com.saborhub.infrastructure.persistence.UsuarioRepository;
 
 @Configuration
-public class UsuarioConfig {
-
+public class UsuarioConfiguration {
     @Bean
-    CriarUsuario criarUsuario(RepositorioUsuario repositorioDeUsuario){
-        return new CriarUsuario(repositorioDeUsuario);
+    RepositorioUsuario criarRepositorioJpa(UsuarioRepository repositorio, UsuarioEntityMapper mapper){
+        return new RepositorioUsuarioJpa(repositorio, mapper);
     }
 
     @Bean
@@ -26,11 +24,6 @@ public class UsuarioConfig {
     @Bean
     ObterUsuario obterUsuario(RepositorioUsuario repositorioDeUsuario){
         return new ObterUsuario(repositorioDeUsuario);
-    }
-
-    @Bean
-    RepositorioUsuario criarRepositorioJpa(UsuarioRepository repositorio, UsuarioEntityMapper mapper){
-        return new RepositorioUsuarioJpa(repositorio, mapper);
     }
 
     @Bean

@@ -11,7 +11,7 @@ public class ObterUsuario {
         this.repositorio = repositorio;
     }
 
-    public Usuario obterUsuarioPorId(Long id) {
+    public Usuario obterUsuarioPorId(String id) {
         return this.repositorio.obterUsuario(id);
     }
 }

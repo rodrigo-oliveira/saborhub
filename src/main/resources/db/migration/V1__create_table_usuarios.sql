@@ -1,8 +1,10 @@
 CREATE TABLE usuarios (
-    id BIGSERIAL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    login VARCHAR(100) NOT NULL,
-    senha VARCHAR(255) NOT NULL,
-    data_ultima_alteracao TIMESTAMP WITH TIME ZONE
+    id TEXT PRIMARY KEY,
+    nome TEXT NOT NULL,
+    email TEXT NOT NULL,
+    login TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    data_ultima_alteracao TIMESTAMPTZ,
+    role SMALLINT NOT NULL,
+    endereco JSONB NOT NULL
 );

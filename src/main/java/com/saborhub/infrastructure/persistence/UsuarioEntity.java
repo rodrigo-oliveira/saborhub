@@ -1,80 +1,103 @@
 package com.saborhub.infrastructure.persistence;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.saborhub.domain.entities.usuario.Endereco;
+import com.saborhub.domain.entities.usuario.UsuarioRole;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Entity
 @Table(name = "usuarios")
-public class UsuarioEntity {
+@Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+public class UsuarioEntity implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     private String nome;
     private String email;
     private String login;
-    private String senha;
+    private String password;
     private ZonedDateTime dataUltimaAlteracao;
 
-    public UsuarioEntity() { }
+    @Enumerated(EnumType.ORDINAL)
+    private UsuarioRole role;
 
-    public UsuarioEntity(Long id, String nome, String email, String login, String senha, ZonedDateTime dataUltimaAlteracao) {
-        this.id = id;
+    @org.hibernate.annotations.Type(com.vladmihalcea.hibernate.type.json.JsonBinaryType.class)
+    @Column(columnDefinition = "jsonb")
+    private Endereco endereco;
+
+    public UsuarioEntity(
+        String nome,
+        String email,
+        String login,
+        String password,
+        ZonedDateTime dataUltimaAlteracao,
+        UsuarioRole role,
+        Endereco endereco
+    ) {
         this.nome = nome;
         this.email = email;
         this.login = login;
-        this.senha = senha;
+        this.password = password;
         this.dataUltimaAlteracao = dataUltimaAlteracao;
+        this.role = role;
+        this.endereco = endereco;
     }
 
-    public Long getId() {
-        return id;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UsuarioRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLogin() {
+    @Override
+    public String getUsername() {
         return login;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    @Override
+    public String getPassword() {
+        return password;
     }
 
-    public String getSenha() {
-        return senha;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public ZonedDateTime getDataUltimaAlteracao() {
-        return dataUltimaAlteracao;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public void setDataUltimaAlteracao(ZonedDateTime dataUltimaAlteracao) {
-        this.dataUltimaAlteracao = dataUltimaAlteracao;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

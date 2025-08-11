@@ -3,27 +3,40 @@ package com.saborhub.domain.entities.usuario;
 import java.time.ZonedDateTime;
 
 public class Usuario {
-    private Long id;
+    private String id;
     private String nome;
     private String email;
     private String login;
-    private String senha;
+    private String password;
     private ZonedDateTime dataUltimaAlteracao;
+    private UsuarioRole role;
+    private Endereco endereco;
 
-    public Usuario(Long id, String nome, String email, String login, String senha, ZonedDateTime dataUltimaAlteracao) {
+    public Usuario(
+        String id,
+        String nome,
+        String email,
+        String login,
+        String password,
+        ZonedDateTime dataUltimaAlteracao,
+        UsuarioRole role,
+        Endereco endereco
+    ) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.login = login;
-        this.senha = senha;
+        this.password = password;
         this.dataUltimaAlteracao = dataUltimaAlteracao;
+        this.role = role;
+        this.endereco = endereco;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -51,12 +64,12 @@ public class Usuario {
         this.login = login;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public ZonedDateTime getDataUltimaAlteracao() {
@@ -66,4 +79,21 @@ public class Usuario {
     public void setDataUltimaAlteracao(ZonedDateTime dataUltimaAlteracao) {
         this.dataUltimaAlteracao = dataUltimaAlteracao;
     }
+
+    public UsuarioRole getRole() {
+        return role;
+    }
+
+    public void setRole(UsuarioRole role) {
+        this.role = role;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
 }

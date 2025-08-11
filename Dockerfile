@@ -1,37 +1,33 @@
 
+
+
 # Build stage
 FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
-# Copy pom.xml first to leverage Docker cache
+# Copie pom.xml e baixe dependências
 COPY pom.xml .
-
-# Download dependencies
 RUN mvn dependency:go-offline -B
 
-# Copy source code
+# Copie o código-fonte
 COPY src ./src
 
-# Build the application e garanta nome fixo do JAR
+# Build normal (mas não copia o JAR ainda)
 RUN mvn clean package -DskipTests && cp target/*.jar target/saborhub.jar
 
-# Runtime stage
-FROM eclipse-temurin:21-jre-alpine
+# Runtime stage para desenvolvimento com hot reload
+FROM maven:3.9.9-eclipse-temurin-21 AS dev
 
 WORKDIR /app
 
-# Copie o JAR final
-COPY --from=build /app/target/saborhub.jar app.jar
+# Copie o código-fonte e pom.xml (serão sobrescritos por volumes)
+COPY pom.xml .
+COPY src ./src
 
-# (Opcional) Copie arquivos de configuração externos, se necessário
-# COPY --from=build /app/src/main/resources/application-docker.properties ./application-docker.properties
-
-# Exponha a porta padrão do Spring Boot
 EXPOSE 8080
 
-# Defina variáveis de ambiente padrão, se necessário
-# ENV SPRING_PROFILES_ACTIVE=docker
+VOLUME ["/app/src", "/app/target", "/app/pom.xml"]
 
-# Execute a aplicação
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Rodar em modo desenvolvimento com hot reload
+ENTRYPOINT ["mvn", "spring-boot:run", "-Dspring-boot.run.profiles=docker"]

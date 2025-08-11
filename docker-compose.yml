@@ -35,8 +35,15 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/saborhub
       - SPRING_DATASOURCE_USERNAME=saborhub
       - SPRING_DATASOURCE_PASSWORD=saborhub
+      - MAVEN_OPTS=-Xmx512m -Dfile.encoding=UTF-8
     networks:
       - saborhub-network
+
+    # Mapeia o código-fonte, target e pom.xml para hot reload com DevTools
+    volumes:
+      - ./src:/app/src
+      - ./target:/app/target
+      - ./pom.xml:/app/pom.xml
 
 volumes:
   postgres_data:
