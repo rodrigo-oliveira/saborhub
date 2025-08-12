@@ -106,4 +106,11 @@ public class UsuarioEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public void setNome(String nome) { this.nome = nome; }
+    public void setEmail(String email) { this.email = email; }
+    public void setLogin(String login) { this.login = login; }
+    public void setPassword(String password) { this.password = password; }
+    public void setEndereco(Endereco endereco) { this.endereco = endereco; }
+    public void touchUltimaAlteracao() { this.dataUltimaAlteracao = ZonedDateTime.now(); }
 }
