@@ -2,7 +2,6 @@ package com.saborhub.infrastructure.gateways;
 
 import com.saborhub.application.gateways.RepositorioUsuario;
 import com.saborhub.domain.entities.usuario.Usuario;
-import com.saborhub.infrastructure.persistence.UsuarioEntity;
 import com.saborhub.infrastructure.persistence.UsuarioRepository;
 
 import java.util.List;
@@ -31,5 +30,10 @@ public class RepositorioUsuarioJpa implements RepositorioUsuario {
         return repositorio.findById(id)
                 .map(mapper::toDomain)
                 .orElse(null);  
+    }
+
+    @Override
+    public void deletarPorId(String id) {
+        repositorio.deleteById(id);
     }
 }

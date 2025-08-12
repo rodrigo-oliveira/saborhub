@@ -7,4 +7,6 @@ public interface RepositorioUsuario {
     List<Usuario> listarTodos();
 
     Usuario obterUsuario(String id);
+    
+    void deletarPorId(String id);
 }

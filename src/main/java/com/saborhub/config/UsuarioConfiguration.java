@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import com.saborhub.application.gateways.RepositorioUsuario;
 import com.saborhub.application.usecases.ListarUsuarios;
 import com.saborhub.application.usecases.ObterUsuario;
+import com.saborhub.application.usecases.DeletarUsuario;
 import com.saborhub.infrastructure.gateways.RepositorioUsuarioJpa;
 import com.saborhub.infrastructure.gateways.UsuarioEntityMapper;
 import com.saborhub.infrastructure.persistence.UsuarioRepository;
@@ -29,5 +30,10 @@ public class UsuarioConfiguration {
     @Bean
     UsuarioEntityMapper retornaMapper(){
         return new UsuarioEntityMapper();
+    }
+
+    @Bean
+    public DeletarUsuario deletarUsuario(RepositorioUsuario repositorioUsuario) {
+        return new DeletarUsuario(repositorioUsuario);
     }
 }
