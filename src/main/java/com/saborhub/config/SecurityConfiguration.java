@@ -28,8 +28,6 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/autenticacao/entrar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuario").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/usuario").hasAnyRole("CLIENTE", "RESTAURANTE", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/usuario/alterar-senha").hasAnyRole("CLIENTE", "RESTAURANTE", "ADMIN")
                         .anyRequest().authenticated())
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();

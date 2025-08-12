@@ -115,6 +115,7 @@ public class UsuarioController {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('CLIENTE') or hasRole('RESTAURANTE') or hasRole('ADMIN')")
     public ResponseEntity<UsuarioDto> atualizarUsuario(
             @AuthenticationPrincipal UsuarioEntity autenticado,
             @RequestBody AtualizarUsuarioDto payload
@@ -149,6 +150,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/alterar-senha")
+    @PreAuthorize("hasRole('CLIENTE') or hasRole('RESTAURANTE') or hasRole('ADMIN')")
     public ResponseEntity<Void> alterarSenha(
         @AuthenticationPrincipal UsuarioEntity autenticado,
         @RequestBody AlterarSenhaDto payload
