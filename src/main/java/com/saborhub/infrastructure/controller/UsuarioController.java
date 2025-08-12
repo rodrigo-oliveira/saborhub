@@ -3,6 +3,7 @@ package com.saborhub.infrastructure.controller;
 import com.saborhub.application.usecases.ListarUsuarios;
 import com.saborhub.application.usecases.ObterUsuario;
 import com.saborhub.application.usecases.DeletarUsuario;
+import com.saborhub.application.usecases.RegistrarUsuario;
 import com.saborhub.domain.entities.usuario.AtualizarUsuarioDto;
 import com.saborhub.domain.entities.usuario.RegistroUsuarioDto;
 import com.saborhub.domain.entities.usuario.AlterarSenhaDto;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,43 +34,29 @@ public class UsuarioController {
     private final ListarUsuarios listarUsuarios;
     private final ObterUsuario obterUsuario;
     private final DeletarUsuario deletarUsuario;
+    private final RegistrarUsuario registrarUsuario;
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UsuarioRepository repository;
 
     public UsuarioController(
         ListarUsuarios listarUsuarios,
         ObterUsuario obterUsuario,
         DeletarUsuario deletarUsuario,
+        RegistrarUsuario registrarUsuario,
         UsuarioRepository usuarioRepository,
         PasswordEncoder passwordEncoder
     ) {
         this.listarUsuarios = listarUsuarios;
         this.obterUsuario = obterUsuario;
         this.deletarUsuario = deletarUsuario;
+        this.registrarUsuario = registrarUsuario;
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping
     public ResponseEntity<Void> registrarUsuario(@RequestBody RegistroUsuarioDto data){
-        if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
-
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
-        UsuarioEntity newUser = new UsuarioEntity(
-            data.nome(),
-            data.email(),
-            data.login(),
-            encryptedPassword,
-            java.time.ZonedDateTime.now(),
-            data.role(),
-            data.endereco()
-        );
-
-        this.repository.save(newUser);
-
+        registrarUsuario.executar(data);
         return ResponseEntity.ok().build();
     }
 

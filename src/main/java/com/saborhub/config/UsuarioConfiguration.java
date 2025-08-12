@@ -6,9 +6,11 @@ import com.saborhub.application.gateways.RepositorioUsuario;
 import com.saborhub.application.usecases.ListarUsuarios;
 import com.saborhub.application.usecases.ObterUsuario;
 import com.saborhub.application.usecases.DeletarUsuario;
+import com.saborhub.application.usecases.RegistrarUsuario;
 import com.saborhub.infrastructure.gateways.RepositorioUsuarioJpa;
 import com.saborhub.infrastructure.gateways.UsuarioEntityMapper;
 import com.saborhub.infrastructure.persistence.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class UsuarioConfiguration {
@@ -25,6 +27,11 @@ public class UsuarioConfiguration {
     @Bean
     ObterUsuario obterUsuario(RepositorioUsuario repositorioDeUsuario){
         return new ObterUsuario(repositorioDeUsuario);
+    }
+
+    @Bean
+    RegistrarUsuario registrarUsuario(RepositorioUsuario repositorioDeUsuario, PasswordEncoder passwordEncoder) {
+        return new RegistrarUsuario(repositorioDeUsuario, passwordEncoder);
     }
 
     @Bean
