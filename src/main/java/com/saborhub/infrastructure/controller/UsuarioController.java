@@ -28,14 +28,15 @@ public class UsuarioController {
         return listarUsuarios
                 .obterTodosUsuarios()
                 .stream()
-        .map(usuario -> new UsuarioDto(
-            usuario.getId(),
-            usuario.getNome(),
-            usuario.getEmail(),
-            usuario.getLogin(),
-            usuario.getDataUltimaAlteracao(),
-            usuario.getRole(),
-            usuario.getEndereco()))
+                .map(usuario -> new UsuarioDto(
+                        usuario.getId(),
+                        usuario.getNome(),
+                        usuario.getEmail(),
+                        usuario.getLogin(),
+                        usuario.getDataUltimaAlteracao(),
+                        usuario.getRole(),
+                        usuario.getEndereco()
+                ))
                 .collect(Collectors.toList());
     }
 
@@ -43,13 +44,14 @@ public class UsuarioController {
     public UsuarioDto obterUsuario(@PathVariable String id) {
         Usuario usuario = obterUsuario.obterUsuarioPorId(id);
 
-    return new UsuarioDto(
-        usuario.getId(),
-        usuario.getNome(),
-        usuario.getEmail(),
-        usuario.getLogin(),
-        usuario.getDataUltimaAlteracao(),
-        usuario.getRole(),
-        usuario.getEndereco());
+        return new UsuarioDto(
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getEmail(),
+                usuario.getLogin(),
+                usuario.getDataUltimaAlteracao(),
+                usuario.getRole(),
+                usuario.getEndereco()
+        );
     }
 }

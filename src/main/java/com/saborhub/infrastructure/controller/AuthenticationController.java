@@ -17,7 +17,7 @@ import com.saborhub.infrastructure.persistence.UsuarioEntity;
 import com.saborhub.infrastructure.persistence.UsuarioRepository;
 
 @RestController
-@RequestMapping("autenticacao")
+@RequestMapping("/autenticacao")
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -29,7 +29,7 @@ public class AuthenticationController {
     private TokenService tokenService;
 
     @PostMapping("/entrar")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody AutenticacaoDto data){
+    public ResponseEntity<LoginResponseDto> entrar(@RequestBody AutenticacaoDto data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((UsuarioEntity) auth.getPrincipal());
@@ -37,8 +37,8 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginResponseDto(token));
     }
 
-    @PostMapping("/registrar")
-    public ResponseEntity<Void> register(@RequestBody RegistroUsuarioDto data){
+    @PostMapping("/cadastrar")
+    public ResponseEntity<Void> cadastrar(@RequestBody RegistroUsuarioDto data){
         if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());

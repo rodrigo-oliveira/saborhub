@@ -21,7 +21,7 @@ public class UsuarioTest {
                 super(id, nome, email, login, password, dataUltimaAlteracao, role, endereco);
             }
         }
-        Usuario usuario = new UsuarioConcreto("1", "Teste", "teste@email.com", "teste", "abc123", now, UsuarioRole.USER, new Endereco("Rua A", "123", "São Paulo", "SP", "18000000"));
+    Usuario usuario = new UsuarioConcreto("1", "Teste", "teste@email.com", "teste", "abc123", now, UsuarioRole.CLIENTE, new Endereco("Rua A", "123", "São Paulo", "SP", "18000000"));
 
         assertEquals("Teste", usuario.getNome());
         assertEquals("teste@email.com", usuario.getEmail());

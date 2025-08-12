@@ -40,7 +40,7 @@ public class UsuarioEntity implements UserDetails {
     private String password;
     private ZonedDateTime dataUltimaAlteracao;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private UsuarioRole role;
 
     @org.hibernate.annotations.Type(com.vladmihalcea.hibernate.type.json.JsonBinaryType.class)
@@ -67,8 +67,14 @@ public class UsuarioEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UsuarioRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return switch (this.role) {
+            case ADMIN -> List.of(
+                new SimpleGrantedAuthority("ROLE_ADMIN"),
+                new SimpleGrantedAuthority("ROLE_CLIENTE"),
+                new SimpleGrantedAuthority("ROLE_RESTAURANTE"));
+            case CLIENTE -> List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
+            case RESTAURANTE -> List.of(new SimpleGrantedAuthority("ROLE_RESTAURANTE"));
+        };
     }
 
     @Override

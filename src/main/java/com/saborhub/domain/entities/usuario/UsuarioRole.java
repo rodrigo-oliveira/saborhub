@@ -2,7 +2,8 @@ package com.saborhub.domain.entities.usuario;
 
 public enum UsuarioRole {
     ADMIN("admin"),
-    USER("user");
+    CLIENTE("cliente"),
+    RESTAURANTE("restaurante");
 
     private String role;
 

@@ -5,6 +5,6 @@ CREATE TABLE usuarios (
     login TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     data_ultima_alteracao TIMESTAMPTZ,
-    role SMALLINT NOT NULL,
+    role TEXT NOT NULL CHECK (role IN ('ADMIN','CLIENTE','RESTAURANTE')),
     endereco JSONB NOT NULL
 );
