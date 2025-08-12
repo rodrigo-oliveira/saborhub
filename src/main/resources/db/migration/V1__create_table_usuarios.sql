@@ -3,7 +3,7 @@ CREATE TABLE usuarios (
     nome TEXT NOT NULL,
     email TEXT NOT NULL,
     login TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,
+    senha TEXT NOT NULL,
     data_ultima_alteracao TIMESTAMPTZ,
     role TEXT NOT NULL CHECK (role IN ('ADMIN','CLIENTE','RESTAURANTE')),
     endereco JSONB NOT NULL

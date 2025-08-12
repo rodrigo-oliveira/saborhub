@@ -3,6 +3,7 @@ package com.saborhub.infrastructure.controller;
 import com.saborhub.application.usecases.ListarUsuarios;
 import com.saborhub.application.usecases.ObterUsuario;
 import com.saborhub.domain.entities.usuario.AtualizarUsuarioDto;
+import com.saborhub.domain.entities.usuario.AlterarSenhaDto;
 import com.saborhub.domain.entities.usuario.Usuario;
 import com.saborhub.domain.entities.usuario.UsuarioDto;
 import com.saborhub.infrastructure.persistence.UsuarioEntity;
@@ -10,7 +11,7 @@ import com.saborhub.infrastructure.persistence.UsuarioRepository;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,15 +27,18 @@ public class UsuarioController {
     private final ListarUsuarios listarUsuarios;
     private final ObterUsuario obterUsuario;
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UsuarioController(
         ListarUsuarios listarUsuarios,
         ObterUsuario obterUsuario,
-        UsuarioRepository usuarioRepository
+    UsuarioRepository usuarioRepository,
+    PasswordEncoder passwordEncoder
     ) {
         this.listarUsuarios = listarUsuarios;
         this.obterUsuario = obterUsuario;
         this.usuarioRepository = usuarioRepository;
+    this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -85,9 +89,6 @@ public class UsuarioController {
             // opcional: validar duplicidade de login
             autenticado.setLogin(payload.login());
         }
-        if (payload.password() != null && !payload.password().isBlank()) {
-            autenticado.setPassword(new BCryptPasswordEncoder().encode(payload.password()));
-        }
         if (payload.endereco() != null) {
             autenticado.setEndereco(payload.endereco());
         }
@@ -106,5 +107,26 @@ public class UsuarioController {
         );
 
         return ResponseEntity.ok(body);
+    }
+
+    @PutMapping("/alterar-senha")
+    public ResponseEntity<Void> alterarMinhaSenha(
+            @AuthenticationPrincipal UsuarioEntity autenticado,
+            @RequestBody AlterarSenhaDto payload
+    ) {
+        if (payload == null || payload.senhaAtual() == null || payload.novaSenha() == null
+                || payload.senhaAtual().isBlank() || payload.novaSenha().isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!passwordEncoder.matches(payload.senhaAtual(), autenticado.getPassword())) {
+            return ResponseEntity.status(401).build();
+        }
+
+        autenticado.setSenha(passwordEncoder.encode(payload.novaSenha()));
+        autenticado.touchUltimaAlteracao();
+        usuarioRepository.save(autenticado);
+
+        return ResponseEntity.noContent().build();
     }
 }

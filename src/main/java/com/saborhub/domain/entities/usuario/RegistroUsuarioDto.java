@@ -5,7 +5,7 @@ public record RegistroUsuarioDto(
         String nome,
         String email,
         String login,
-        String password,
+        String senha,
         UsuarioRole role,
         Endereco endereco
 ) {

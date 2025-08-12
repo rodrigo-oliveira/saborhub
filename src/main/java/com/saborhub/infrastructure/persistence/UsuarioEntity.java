@@ -37,7 +37,7 @@ public class UsuarioEntity implements UserDetails {
     private String nome;
     private String email;
     private String login;
-    private String password;
+    private String senha;
     private ZonedDateTime dataUltimaAlteracao;
 
     @Enumerated(EnumType.STRING)
@@ -51,7 +51,7 @@ public class UsuarioEntity implements UserDetails {
         String nome,
         String email,
         String login,
-        String password,
+        String senha,
         ZonedDateTime dataUltimaAlteracao,
         UsuarioRole role,
         Endereco endereco
@@ -59,7 +59,7 @@ public class UsuarioEntity implements UserDetails {
         this.nome = nome;
         this.email = email;
         this.login = login;
-        this.password = password;
+        this.senha = senha;
         this.dataUltimaAlteracao = dataUltimaAlteracao;
         this.role = role;
         this.endereco = endereco;
@@ -84,7 +84,7 @@ public class UsuarioEntity implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return senha;
     }
 
     @Override
@@ -110,7 +110,7 @@ public class UsuarioEntity implements UserDetails {
     public void setNome(String nome) { this.nome = nome; }
     public void setEmail(String email) { this.email = email; }
     public void setLogin(String login) { this.login = login; }
-    public void setPassword(String password) { this.password = password; }
+    public void setSenha(String senha) { this.senha = senha; }
     public void setEndereco(Endereco endereco) { this.endereco = endereco; }
     public void touchUltimaAlteracao() { this.dataUltimaAlteracao = ZonedDateTime.now(); }
 }

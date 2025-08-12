@@ -11,7 +11,7 @@ public class UsuarioEntityMapper {
             usuario.getNome(),
             usuario.getEmail(),
             usuario.getLogin(),
-            usuario.getPassword(),
+            usuario.getSenha(),
             usuario.getDataUltimaAlteracao(),
             usuario.getRole(),
             usuario.getEndereco()
@@ -24,7 +24,7 @@ public class UsuarioEntityMapper {
             entity.getNome(),
             entity.getEmail(),
             entity.getLogin(),
-            entity.getPassword(),
+            entity.getSenha(),
             entity.getDataUltimaAlteracao(),
             entity.getRole(),
             entity.getEndereco()

@@ -7,7 +7,7 @@ public class Usuario {
     private String nome;
     private String email;
     private String login;
-    private String password;
+    private String senha;
     private ZonedDateTime dataUltimaAlteracao;
     private UsuarioRole role;
     private Endereco endereco;
@@ -17,7 +17,7 @@ public class Usuario {
         String nome,
         String email,
         String login,
-        String password,
+        String senha,
         ZonedDateTime dataUltimaAlteracao,
         UsuarioRole role,
         Endereco endereco
@@ -26,7 +26,7 @@ public class Usuario {
         this.nome = nome;
         this.email = email;
         this.login = login;
-        this.password = password;
+        this.senha = senha;
         this.dataUltimaAlteracao = dataUltimaAlteracao;
         this.role = role;
         this.endereco = endereco;
@@ -64,12 +64,12 @@ public class Usuario {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public ZonedDateTime getDataUltimaAlteracao() {
