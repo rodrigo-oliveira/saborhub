@@ -12,7 +12,6 @@ import com.saborhub.domain.entities.usuario.UsuarioDto;
 import com.saborhub.infrastructure.persistence.UsuarioEntity;
 import com.saborhub.infrastructure.persistence.UsuarioRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

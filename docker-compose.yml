@@ -7,7 +7,6 @@ services:
       POSTGRES_USER: saborhub
       POSTGRES_PASSWORD: saborhub
       POSTGRES_DB: saborhub
-      # Permite conexões externas (opcional, útil para debug)
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
