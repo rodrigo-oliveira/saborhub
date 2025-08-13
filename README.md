@@ -5,7 +5,7 @@
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 
-SaborHub é uma aplicação Java Spring Boot para gerenciamento de usuários, utilizando PostgreSQL como banco de dados. O projeto está configurado para desenvolvimento com hot reload via Spring Boot DevTools e Docker Compose.
+O sistema terá três tipos de usuários: administrador, dono de restaurante e cliente, com campos como nome, email, login, senha, data da última alteração e endereço. O projeto está configurado para rodar em um ambiente Docker com Docker Compose, integrado a um banco de dados relacional PostgreSQL.
 
 `💡 Recomendação: A forma recomendada de executar o projeto é utilizando Docker Compose, pois simplifica a configuração e garante um ambiente de desenvolvimento consistente.`
 
@@ -58,13 +58,25 @@ Para rodar a aplicação utilizando Docker, siga os passos abaixo:
 
 ## 🔌 Endpoints
 
-- `POST /autenticacao/entrar` - Autenticação de usuário
-- `GET  /usuario` - Listar todos os usuário
-- `POST /usuario` - Cadastrar novo usuário
-- `GET  /usuario/:id` - Buscar usuário por id
-- `PUT  /usuario` - Atualizar dados do usuário
-- `PUT  /usuario/alterar-senha` - Alterar Senha do Usuário
-- `DELETE  /usuario/:id` - Remover usuário
+Autenticação:
+- `POST /autenticacao/entrar` - Para um usuário fazer login e obter um token de autenticação.
+
+
+Gerenciamento de Usuários:
+- `GET /usuario` - Lista todos os usuários cadastrados.
+- `POST /usuario` - Cria um novo usuário.
+- `GET /usuario/{id}` - Busca um usuário específico pelo seu ID.
+- `PUT /usuario` - Atualiza os dados de um usuário.
+- `PUT /usuario/alterar-senha` - Altera a senha de um usuário.
+- `DELETE /usuario/{id}` - Remove um usuário pelo seu ID.
+
+
+## 📝 Collections para Teste
+
+Link para a Collection do Postman:
+https://github.com/rodrigo-oliveira/saborhub/blob/main/SaborHub%20-%20Fluxos%20de%20Uso.postman_collection.json
+
+Importe a collection no Postman, clique com o botão direito sobre ela e selecione a opção “Run” para rodar os fluxos de uso da aplicação.
 
 ## 🗄️ Banco de dados
 
