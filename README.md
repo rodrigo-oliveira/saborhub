@@ -5,7 +5,14 @@
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 
-O sistema terá três tipos de usuários: administrador, dono de restaurante e cliente, com campos como nome, email, login, senha, data da última alteração e endereço. O projeto está configurado para rodar em um ambiente Docker com Docker Compose, integrado a um banco de dados relacional PostgreSQL.
+Na região, diversos restaurantes enfrentam dificuldades para arcar com os custos de sistemas de gestão individuais. Para contornar esse desafio, eles decidiram unir recursos e contratar estudantes para desenvolver um sistema de gestão compartilhado.
+Esse sistema deverá facilitar a administração dos estabelecimentos e oferecer funcionalidades para que os clientes possam escolher restaurantes pela qualidade da comida, consultar informações, realizar avaliações e efetuar pedidos online.
+Por questões financeiras, o desenvolvimento será realizado em fases, permitindo implantação gradual, com ajustes e melhorias contínuas baseadas no uso real e no feedback dos usuários.
+
+### Objetivo do Projeto
+O projeto tem como objetivo criar um sistema de gestão compartilhado para atender às necessidades dos restaurantes e de seus clientes.
+O sistema contará com três tipos de usuários — administrador, dono de restaurante e cliente — cada um com informações como nome, e-mail, login, senha, data da última alteração e endereço.
+A solução foi desenvolvida para execução em ambiente Docker, utilizando Docker Compose e um banco de dados relacional PostgreSQL, garantindo escalabilidade e facilidade de implantação.
 
 `💡 Recomendação: A forma recomendada de executar o projeto é utilizando Docker Compose, pois simplifica a configuração e garante um ambiente de desenvolvimento consistente.`
 
@@ -71,7 +78,7 @@ Gerenciamento de Usuários:
 - `DELETE /usuario/{id}` - Remove um usuário pelo seu ID.
 
 
-## 📝 Collections para Teste
+## 📝 Collection para Teste
 
 Link para a Collection do Postman:
 https://github.com/rodrigo-oliveira/saborhub/blob/main/SaborHub%20-%20Fluxos%20de%20Uso.postman_collection.json
