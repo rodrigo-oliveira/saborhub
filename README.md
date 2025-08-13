@@ -1,5 +1,5 @@
 
-# SaborHub
+## 🍔 SaborHub
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
@@ -56,7 +56,7 @@ Para rodar a aplicação utilizando Docker, siga os passos abaixo:
 - Por padrão, a aplicação ficará disponível em:
 `http://localhost:8080`
 
-## Endpoints
+## 🔌 Endpoints
 
 - `POST /autenticacao/entrar` - Autenticação de usuário
 - `GET  /usuario` - Listar todos os usuário
@@ -66,7 +66,7 @@ Para rodar a aplicação utilizando Docker, siga os passos abaixo:
 - `PUT  /usuario/alterar-senha` - Alterar Senha do Usuário
 - `DELETE  /usuario/:id` - Remover usuário
 
-## Banco de dados
+## 🗄️ Banco de dados
 
 - O serviço `db` usa a imagem oficial do Postgres e persiste dados em volume Docker.
 - Configurações de acesso estão em `docker-compose.yml` e `application-docker.properties`.
