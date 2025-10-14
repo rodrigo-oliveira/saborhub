@@ -25,3 +25,4 @@ SELECT gen_random_uuid()::text,
 WHERE NOT EXISTS (SELECT 1
                   FROM usuarios
                   WHERE login = '${admin_login}');
+

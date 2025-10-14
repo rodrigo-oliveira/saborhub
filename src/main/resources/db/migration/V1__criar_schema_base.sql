@@ -23,9 +23,16 @@ CREATE TABLE IF NOT EXISTS usuarios
 
 CREATE TABLE restaurantes
 (
-    id                    BIGINT PRIMARY KEY,
+    id                    TEXT PRIMARY KEY,
+    cnpj                  VARCHAR(14) NOT NULL,
     nome                  VARCHAR(255) NOT NULL,
-    endereco              VARCHAR(500) NOT NULL,
+    rua          VARCHAR(255),
+    numero       VARCHAR(50),
+    complemento  VARCHAR(255),
+    bairro       VARCHAR(255),
+    cidade       VARCHAR(255),
+    estado       VARCHAR(100),
+    cep          VARCHAR(20),
     tipo_cozinha          VARCHAR(100),
     horario_funcionamento VARCHAR(100),
 
@@ -36,14 +43,14 @@ CREATE TABLE restaurantes
 
 CREATE TABLE itens_cardapio
 (
-    id                          BIGINT PRIMARY KEY,
+    id                          TEXT PRIMARY KEY,
     nome                        VARCHAR(255)   NOT NULL,
     descricao                   VARCHAR(500),
     preco                       DECIMAL(10, 2) NOT NULL,
     disponivel_somente_no_local BOOLEAN        NOT NULL,
     caminho_foto                VARCHAR(500),
 
-    restaurante_id              BIGINT         NOT NULL,
+    restaurante_id              TEXT         NOT NULL,
 
     FOREIGN KEY (restaurante_id) REFERENCES restaurantes (id)
 );

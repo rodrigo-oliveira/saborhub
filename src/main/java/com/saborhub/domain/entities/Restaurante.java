@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Restaurante {
+    private String id;
     private String cnpj;
     private String nome;
     private Endereco endereco;

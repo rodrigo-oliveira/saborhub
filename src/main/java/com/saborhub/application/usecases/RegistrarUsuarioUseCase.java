@@ -3,6 +3,7 @@ package com.saborhub.application.usecases;
 import com.saborhub.application.dto.RegistroUsuarioDto;
 import com.saborhub.application.gateways.UsuarioRepositoryInterface;
 import com.saborhub.domain.entities.Usuario;
+import com.saborhub.domain.exceptions.UsuarioJaExisteException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class RegistrarUsuario {
@@ -17,7 +18,7 @@ public class RegistrarUsuario {
 
     public void executar(RegistroUsuarioDto dados) {
         if (repositorioUsuario.findByLogin(dados.login()) != null) {
-            throw new IllegalArgumentException("Usuário com este login já existe.");
+            throw new UsuarioJaExisteException("Usuário com este login já existe.");
         }
 
         String senhaCriptografada = passwordEncoder.encode(dados.senha());
