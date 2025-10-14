@@ -1,0 +1,538 @@
+{
+	"info": {
+		"_postman_id": "26b2e184-8b28-4732-963c-0df8c9d64d38",
+		"name": "SaborHub - Fluxos de Uso",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1740145"
+	},
+	"item": [
+		{
+			"name": "Fluxo 1: Administração de Usuários",
+			"item": [
+				{
+					"name": "1.1 Administrador realiza login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"login\": \"{{usuario_login_admin}}\",\n    \"senha\": \"{{usuario_senha_admin}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/autenticacao/entrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"autenticacao",
+								"entrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 Administrador cadastra um novo restaurante",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Restaurante Teste\",\n    \"email\": \"restaurante-teste@email.com\",\n    \"login\": \"{{usuario_login_restaurante}}\",\n    \"senha\": \"{{usuario_senha_restaurante}}\",\n    \"perfil\": \"DONO_RESTAURANTE\",\n    \"endereco\": {\n        \"rua\": \"Rua A\",\n        \"numero\": \"123\",\n        \"cidade\": \"São Paulo\",\n        \"estado\": \"SP\",\n        \"cep\": \"18000000\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 Administrador cadastra um novo cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Cliente Teste\",\n    \"email\": \"cliente-teste@email.com\",\n    \"login\": \"{{usuario_login_cliente}}\",\n    \"senha\": \"{{usuario_senha_cliente}}\",\n    \"perfil\": \"CLIENTE\",\n    \"endereco\": {\n        \"rua\": \"Rua A\",\n        \"numero\": \"123\",\n        \"cidade\": \"São Paulo\",\n        \"estado\": \"SP\",\n        \"cep\": \"18000000\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 Administrador lista todos os usuários",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();\r",
+									"let usuario_restaurante_id = responseData[1].id;\r",
+									"let usuario_cliente_id = responseData[2].id;\r",
+									"\r",
+									"pm.environment.set(\"usuario_restaurante_id\", usuario_restaurante_id);\r",
+									"pm.environment.set(\"usuario_cliente_id\", usuario_cliente_id);\r",
+									"\r",
+									"console.log(\"usuario_restaurante_id:\", usuario_restaurante_id);\r",
+									"console.log(\"usuario_cliente_id:\", usuario_cliente_id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.5 Administrador busca usuário por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario/{{usuario_restaurante_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"{{usuario_restaurante_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fluxo 2: Gestão da Conta do Restaurante",
+			"item": [
+				{
+					"name": "2.1 Restaurante realiza login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"login\": \"{{usuario_login_restaurante}}\",\n    \"senha\": \"{{usuario_senha_restaurante}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/autenticacao/entrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"autenticacao",
+								"entrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.2 Restaurante atualiza seus dados cadastrais",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Restaurante Teste Atualizado\",\n    \"email\": \"restaurante-teste@email.com\",\n    \"login\": \"restaurante-atualizado\",\n    \"endereco\": {\n        \"rua\": \"Rua B\",\n        \"numero\": \"321\",\n        \"cidade\": \"Rio de Janeiro\",\n        \"estado\": \"RJ\",\n        \"cep\": \"11000000\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.3 Restaurante realiza login com novo login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"login\": \"restaurante-atualizado\",\n    \"senha\": \"{{usuario_senha_restaurante}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/autenticacao/entrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"autenticacao",
+								"entrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.4 Restaurante altera sua senha",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"senhaAtual\": \"{{usuario_senha_restaurante}}\",\n    \"novaSenha\": \"novasenha123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario/alterar-senha",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"alterar-senha"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.5 Restaurante realiza login com nova senha",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"login\": \"restaurante-atualizado\",\n    \"senha\": \"novasenha123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/autenticacao/entrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"autenticacao",
+								"entrar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fluxo 3: Acesso do Cliente",
+			"item": [
+				{
+					"name": "3.1 Cliente realiza login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"login\": \"{{usuario_login_cliente}}\",\n    \"senha\": \"{{usuario_senha_cliente}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/autenticacao/entrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"autenticacao",
+								"entrar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fluxo 4: Limpeza de Dados (Admin)",
+			"item": [
+				{
+					"name": "4.1 Administrador realiza login para limpeza",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"login\": \"{{usuario_login_admin}}\",\n    \"senha\": \"{{usuario_senha_admin}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/autenticacao/entrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"autenticacao",
+								"entrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.2 Administrador obtém IDs dos usuários para remover",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();\r",
+									"let usuario_restaurante_id = responseData[1].id;\r",
+									"let usuario_cliente_id = responseData[2].id;\r",
+									"\r",
+									"pm.environment.set(\"usuario_restaurante_id\", usuario_restaurante_id);\r",
+									"pm.environment.set(\"usuario_cliente_id\", usuario_cliente_id);\r",
+									"\r",
+									"console.log(\"usuario_restaurante_id:\", usuario_restaurante_id);\r",
+									"console.log(\"usuario_cliente_id:\", usuario_cliente_id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.3 Administrador remove o usuário do restaurante",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario/{{usuario_restaurante_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"{{usuario_restaurante_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.4 Administrador remove o usuário do cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario/{{usuario_cliente_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"{{usuario_cliente_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if (pm.response.code === 200) {",
+					"    try {",
+					"        let json = pm.response.json();",
+					"        if (json.token) {",
+					"            pm.environment.set('auth_token', json.token);",
+					"            console.log('Token atualizado:', json.token);",
+					"        }",
+					"    } catch (e) {",
+					"        console.warn('Resposta não é JSON válido');",
+					"    }",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "usuario_restaurante_id",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "usuario_cliente_id",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "usuario_login_admin",
+			"value": "admin",
+			"type": "string"
+		},
+		{
+			"key": "usuario_senha_admin",
+			"value": "admin",
+			"type": "string"
+		},
+		{
+			"key": "usuario_login_restaurante",
+			"value": "restaurante",
+			"type": "string"
+		},
+		{
+			"key": "usuario_senha_restaurante",
+			"value": "restaurante",
+			"type": "string"
+		},
+		{
+			"key": "usuario_login_cliente",
+			"value": "cliente",
+			"type": "string"
+		},
+		{
+			"key": "usuario_senha_cliente",
+			"value": "cliente",
+			"type": "string"
+		}
+	]
+}

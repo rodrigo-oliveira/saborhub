@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:17
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: saborhub
+      POSTGRES_PASSWORD: saborhub
+      POSTGRES_DB: saborhub
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - saborhub-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U saborhub"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: saborhub-app
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/saborhub
+      - SPRING_DATASOURCE_USERNAME=saborhub
+      - SPRING_DATASOURCE_PASSWORD=saborhub
+      - MAVEN_OPTS=-Xmx512m -Dfile.encoding=UTF-8
+    networks:
+      - saborhub-network
+
+    # Mapeia o código-fonte, target e pom.xml para hot reload com DevTools
+    volumes:
+      - ./src:/app/src
+      - ./target:/app/target
+      - ./pom.xml:/app/pom.xml
+
+volumes:
+  postgres_data:
+
+networks:
+  saborhub-network:
+    driver: bridge
