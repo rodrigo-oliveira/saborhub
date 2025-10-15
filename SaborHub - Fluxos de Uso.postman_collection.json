@@ -1,7 +1,8 @@
 {
 	"info": {
-		"_postman_id": "26b2e184-8b28-4732-963c-0df8c9d64d38",
-		"name": "SaborHub - Fluxos de Uso",
+		"_postman_id": "3058c7c2-f753-40ac-bcd9-6183e9e505d2",
+		"name": "SaborHub - Fluxos de Uso - Tech Challenge Fase 2",
+		"description": "**Selecione a opção “Run” para rodar os fluxos de uso da aplicação.**",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1740145"
 	},
@@ -11,6 +12,29 @@
 			"item": [
 				{
 					"name": "1.1 Administrador realiza login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    try {",
+									"        let json = pm.response.json();",
+									"        if (json.token) {",
+									"            pm.environment.set('auth_token', json.token);",
+									"            console.log('Token atualizado:', json.token);",
+									"        }",
+									"    } catch (e) {",
+									"        console.warn('Resposta não é JSON válido');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -40,13 +64,23 @@
 					"response": []
 				},
 				{
-					"name": "1.2 Administrador cadastra um novo restaurante",
+					"name": "1.2 Administrador cadastra um usuário com perfil de dono de restaurante",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Restaurante Teste\",\n    \"email\": \"restaurante-teste@email.com\",\n    \"login\": \"{{usuario_login_restaurante}}\",\n    \"senha\": \"{{usuario_senha_restaurante}}\",\n    \"perfil\": \"DONO_RESTAURANTE\",\n    \"endereco\": {\n        \"rua\": \"Rua A\",\n        \"numero\": \"123\",\n        \"cidade\": \"São Paulo\",\n        \"estado\": \"SP\",\n        \"cep\": \"18000000\"\n    }\n}",
+							"raw": "{\n    \"nome\": \"Restaurante Teste\",\n    \"email\": \"restaurante-teste@email.com\",\n    \"login\": \"{{usuario_login_restaurante}}\",\n    \"senha\": \"{{usuario_senha_restaurante}}\",\n    \"perfil\": \"DONO_RESTAURANTE\",\n    \"endereco\": {\n        \"rua\": \"Rua das Palmeiras, 20\",\n        \"bairro\": \"Centro\",\n        \"cidade\": \"São Paulo\",\n        \"estado\": \"SP\",\n        \"cep\": \"30110050\",\n        \"numero\": \"30\",\n        \"complemento\": \"Casa 3\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -66,13 +100,23 @@
 					"response": []
 				},
 				{
-					"name": "1.3 Administrador cadastra um novo cliente",
+					"name": "1.3 Administrador cadastra um usuário com perfil de cliente",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Cliente Teste\",\n    \"email\": \"cliente-teste@email.com\",\n    \"login\": \"{{usuario_login_cliente}}\",\n    \"senha\": \"{{usuario_senha_cliente}}\",\n    \"perfil\": \"CLIENTE\",\n    \"endereco\": {\n        \"rua\": \"Rua A\",\n        \"numero\": \"123\",\n        \"cidade\": \"São Paulo\",\n        \"estado\": \"SP\",\n        \"cep\": \"18000000\"\n    }\n}",
+							"raw": "{\n    \"nome\": \"Cliente Teste\",\n    \"email\": \"cliente-teste@email.com\",\n    \"login\": \"{{usuario_login_cliente}}\",\n    \"senha\": \"{{usuario_senha_cliente}}\",\n    \"perfil\": \"CLIENTE\",\n    \"endereco\": {\n        \"rua\": \"Rua das Palmeiras, 21\",\n        \"bairro\": \"Centro\",\n        \"cidade\": \"São Paulo\",\n        \"estado\": \"SP\",\n        \"cep\": \"30110051\",\n        \"numero\": \"31\",\n        \"complemento\": \"Casa\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -99,22 +143,40 @@
 							"script": {
 								"exec": [
 									"let responseData = pm.response.json();\r",
-									"let usuario_restaurante_id = responseData[1].id;\r",
-									"let usuario_cliente_id = responseData[2].id;\r",
+									"let usuario_restaurante_id = responseData.filter(function(item){return item.login === 'restaurante'})[0].id;\r",
+									"let usuario_cliente_id = responseData.filter(function(item){return item.login === 'cliente'})[0].id;\r",
 									"\r",
 									"pm.environment.set(\"usuario_restaurante_id\", usuario_restaurante_id);\r",
-									"pm.environment.set(\"usuario_cliente_id\", usuario_cliente_id);\r",
-									"\r",
-									"console.log(\"usuario_restaurante_id:\", usuario_restaurante_id);\r",
-									"console.log(\"usuario_cliente_id:\", usuario_cliente_id);\r",
+									"pm.environment.set(\"usuario_cliente_id\", usuario_cliente_id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -130,8 +192,18 @@
 					"response": []
 				},
 				{
-					"name": "1.5 Administrador busca usuário por ID",
+					"name": "1.5 Administrador busca usuário pelo id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -146,6 +218,94 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "1.6 Administrador lista todos os restaurantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurante",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.7 Administrador realiza logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/autenticacao/sair",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"autenticacao",
+								"sair"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -154,6 +314,29 @@
 			"item": [
 				{
 					"name": "2.1 Restaurante realiza login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    try {",
+									"        let json = pm.response.json();",
+									"        if (json.token) {",
+									"            pm.environment.set('auth_token', json.token);",
+									"            console.log('Token atualizado:', json.token);",
+									"        }",
+									"    } catch (e) {",
+									"        console.warn('Resposta não é JSON válido');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -185,11 +368,21 @@
 				{
 					"name": "2.2 Restaurante atualiza seus dados cadastrais",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Restaurante Teste Atualizado\",\n    \"email\": \"restaurante-teste@email.com\",\n    \"login\": \"restaurante-atualizado\",\n    \"endereco\": {\n        \"rua\": \"Rua B\",\n        \"numero\": \"321\",\n        \"cidade\": \"Rio de Janeiro\",\n        \"estado\": \"RJ\",\n        \"cep\": \"11000000\"\n    }\n}",
+							"raw": "{\n    \"nome\": \"Restaurante Teste Atualizado\",\n    \"email\": \"restaurante-teste@email.com\",\n    \"login\": \"{{usuario_login_restaurante}}\",\n    \"endereco\": {\n        \"rua\": \"Rua B\",\n        \"numero\": \"321\",\n        \"cidade\": \"Rio de Janeiro\",\n        \"estado\": \"RJ\",\n        \"cep\": \"11000000\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -209,43 +402,23 @@
 					"response": []
 				},
 				{
-					"name": "2.3 Restaurante realiza login com novo login",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"login\": \"restaurante-atualizado\",\n    \"senha\": \"{{usuario_senha_restaurante}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/autenticacao/entrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"autenticacao",
-								"entrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "2.4 Restaurante altera sua senha",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"senhaAtual\": \"{{usuario_senha_restaurante}}\",\n    \"novaSenha\": \"novasenha123\"\n}",
+							"raw": "{\n    \"senhaAtual\": \"{{usuario_senha_restaurante}}\",\n    \"novaSenha\": \"{{usuario_senha_restaurante}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -266,16 +439,40 @@
 					"response": []
 				},
 				{
-					"name": "2.5 Restaurante realiza login com nova senha",
+					"name": "2.5 Dono de restaurante cadastra um restaurante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();",
+									"let restaurante_id = responseData.id;",
+									"",
+									"pm.environment.set(\"restaurante_id\", restaurante_id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"login\": \"restaurante-atualizado\",\n    \"senha\": \"novasenha123\"\n}",
+							"raw": "{\n  \"cnpj\": \"12345678000191\",\n  \"nome\": \"Sabor & Arte Restaurante\",\n  \"endereco\": {\n    \"rua\": \"Rua das Palmeiras, 123\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"Belo Horizonte\",\n    \"estado\": \"MG\",\n    \"cep\": \"30110053\",\n    \"numero\": \"33\",\n    \"complemento\": \"Casa 2\"\n  },\n  \"tipoCozinha\": \"Brasileira Contemporânea\",\n  \"horarioFuncionamento\": \"Segunda a Sábado, das 11h às 23h\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -283,17 +480,535 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/autenticacao/entrar",
+							"raw": "{{base_url}}/restaurante",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.6 Dono de restaurante recupera os dados do restaurante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurante/{{restaurante_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante",
+								"{{restaurante_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.6 Dono de restaurante atualiza os dados do restaurante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cnpj\": \"12345678000191\",\n  \"nome\": \"Sabor & Arte Restaurante - Matriz\",\n  \"endereco\": {\n    \"rua\": \"Rua das Palmeiras, 123\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"Belo Horizonte\",\n    \"estado\": \"MG\",\n    \"cep\": \"30110053\",\n    \"numero\": \"33\",\n    \"complemento\": \"Casa 2\"\n  },\n  \"tipoCozinha\": \"Brasileira Contemporânea\",\n  \"horarioFuncionamento\": \"Segunda a Sábado, das 11h às 23h\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurante/{{restaurante_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante",
+								"{{restaurante_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.7 Dono de restaurante lista os restaurantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurante",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.8 Dono de restaurante cadastra item no cardápio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();",
+									"let cardapio_item_id = responseData.id;",
+									"",
+									"pm.environment.set(\"cardapio_item_id\", cardapio_item_id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Lasanha\",\n    \"descricao\": \"Lasanha\",\n    \"preco\": \"50\",\n    \"disponivelSomenteNoLocal\": \"true\",\n    \"caminhoFoto\": \"https://img.freepik.com/fotos-gratis/lasanha-classica-com-molho-bolognese_2829-14066.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurante/{{restaurante_id}}/cardapio",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante",
+								"{{restaurante_id}}",
+								"cardapio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.9 Dono de restaurante recupera o item do cardápio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurante/{{restaurante_id}}/cardapio/{{cardapio_item_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante",
+								"{{restaurante_id}}",
+								"cardapio",
+								"{{cardapio_item_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.10 Dono de restaurante atualiza o item do cardápio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Lasanha\",\n    \"descricao\": \"Lasanha de carne moída\",\n    \"preco\": \"55\",\n    \"disponivelSomenteNoLocal\": \"true\",\n    \"caminhoFoto\": \"https://img.freepik.com/fotos-gratis/lasanha-classica-com-molho-bolognese_2829-14066.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurante/{{restaurante_id}}/cardapio/{{cardapio_item_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante",
+								"{{restaurante_id}}",
+								"cardapio",
+								"{{cardapio_item_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.11 Dono de restaurante deleta o item criado no cardápio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurante/{{restaurante_id}}/cardapio/{{cardapio_item_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante",
+								"{{restaurante_id}}",
+								"cardapio",
+								"{{cardapio_item_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.12 Dono de restaurante deleta o restaurante criado",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurante/{{restaurante_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante",
+								"{{restaurante_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.13 Dono de restaurante cadastra um outro restaurante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();",
+									"let restaurante_id = responseData.id;",
+									"",
+									"pm.environment.set(\"restaurante_id\", restaurante_id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cnpj\": \"12345678000191\",\n  \"nome\": \"Sabor & Arte Restaurante\",\n  \"endereco\": {\n    \"rua\": \"Rua das Palmeiras, 123\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"Belo Horizonte\",\n    \"estado\": \"MG\",\n    \"cep\": \"30110053\",\n    \"numero\": \"33\",\n    \"complemento\": \"Casa 2\"\n  },\n  \"tipoCozinha\": \"Brasileira Contemporânea\",\n  \"horarioFuncionamento\": \"Segunda a Sábado, das 11h às 23h\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurante",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.14 Dono de restaurante realiza logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/autenticacao/sair",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"autenticacao",
-								"entrar"
+								"sair"
 							]
 						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -302,6 +1017,29 @@
 			"item": [
 				{
 					"name": "3.1 Cliente realiza login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    try {",
+									"        let json = pm.response.json();",
+									"        if (json.token) {",
+									"            pm.environment.set('auth_token', json.token);",
+									"            console.log('Token atualizado:', json.token);",
+									"        }",
+									"    } catch (e) {",
+									"        console.warn('Resposta não é JSON válido');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -329,6 +1067,150 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "3.2 Cliente lista todos os restaurantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();\r",
+									"let restaurante_id = responseData[0].id;\r",
+									"\r",
+									"pm.environment.set(\"restaurante_id\", restaurante_id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurante",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.3 Cliente recupera os dados de um restaurante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurante/{{restaurante_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante",
+								"{{restaurante_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.4 Cliente realiza logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/autenticacao/sair",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"autenticacao",
+								"sair"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -337,6 +1219,29 @@
 			"item": [
 				{
 					"name": "4.1 Administrador realiza login para limpeza",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    try {",
+									"        let json = pm.response.json();",
+									"        if (json.token) {",
+									"            pm.environment.set('auth_token', json.token);",
+									"            console.log('Token atualizado:', json.token);",
+									"        }",
+									"    } catch (e) {",
+									"        console.warn('Resposta não é JSON válido');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -366,29 +1271,55 @@
 					"response": []
 				},
 				{
-					"name": "4.2 Administrador obtém IDs dos usuários para remover",
+					"name": "4.2 Administrador lista os usuários e obtém os ids",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"let responseData = pm.response.json();\r",
-									"let usuario_restaurante_id = responseData[1].id;\r",
-									"let usuario_cliente_id = responseData[2].id;\r",
-									"\r",
-									"pm.environment.set(\"usuario_restaurante_id\", usuario_restaurante_id);\r",
-									"pm.environment.set(\"usuario_cliente_id\", usuario_cliente_id);\r",
-									"\r",
-									"console.log(\"usuario_restaurante_id:\", usuario_restaurante_id);\r",
-									"console.log(\"usuario_cliente_id:\", usuario_cliente_id);\r",
+									"if (pm) {",
+									"    let responseData = pm.response.json();",
+									"",
+									"    let usuario_restaurante_id = responseData.filter(function(item) {",
+									"        return item.login === 'restaurante';",
+									"    });",
+									"    let usuario_cliente_id = responseData.filter(function(item) {",
+									"        return item.login === 'cliente';",
+									"    });",
+									"",
+									"    pm.environment.set(\"usuario_restaurante_id\", usuario_restaurante_id ? usuario_restaurante_id[0].id : 0);",
+									"    pm.environment.set(\"usuario_cliente_id\", usuario_cliente_id ? usuario_cliente_id[0].id : 0);",
+									"}",
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -404,8 +1335,114 @@
 					"response": []
 				},
 				{
-					"name": "4.3 Administrador remove o usuário do restaurante",
+					"name": "4.3 Administrador lista todos os restaurantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();",
+									"let restaurante_id = responseData[0].id;",
+									"",
+									"pm.environment.set(\"restaurante_id\", restaurante_id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurante",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.4 Administrador remove o restaurante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurante/{{restaurante_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurante",
+								"{{restaurante_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.5 Administrador remove o usuário do restaurante",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -422,8 +1459,18 @@
 					"response": []
 				},
 				{
-					"name": "4.4 Administrador remove o usuário do cliente",
+					"name": "4.6 Administrador remove o usuário do cliente",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -438,6 +1485,30 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}
@@ -458,6 +1529,7 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -467,18 +1539,9 @@
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
+				"requests": {},
 				"exec": [
-					"if (pm.response.code === 200) {",
-					"    try {",
-					"        let json = pm.response.json();",
-					"        if (json.token) {",
-					"            pm.environment.set('auth_token', json.token);",
-					"            console.log('Token atualizado:', json.token);",
-					"        }",
-					"    } catch (e) {",
-					"        console.warn('Resposta não é JSON válido');",
-					"    }",
-					"}"
+					""
 				]
 			}
 		}
@@ -486,53 +1549,51 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://localhost:8080",
-			"type": "string"
+			"value": "http://localhost:8080"
 		},
 		{
 			"key": "auth_token",
-			"value": "0",
-			"type": "string"
+			"value": "0"
 		},
 		{
 			"key": "usuario_restaurante_id",
-			"value": "0",
-			"type": "string"
+			"value": "0"
 		},
 		{
 			"key": "usuario_cliente_id",
-			"value": "0",
-			"type": "string"
+			"value": "0"
 		},
 		{
 			"key": "usuario_login_admin",
-			"value": "admin",
-			"type": "string"
+			"value": "admin"
 		},
 		{
 			"key": "usuario_senha_admin",
-			"value": "admin",
-			"type": "string"
+			"value": "admin"
 		},
 		{
 			"key": "usuario_login_restaurante",
-			"value": "restaurante",
-			"type": "string"
+			"value": "restaurante"
 		},
 		{
 			"key": "usuario_senha_restaurante",
-			"value": "restaurante",
-			"type": "string"
+			"value": "restaurante"
 		},
 		{
 			"key": "usuario_login_cliente",
-			"value": "cliente",
-			"type": "string"
+			"value": "cliente"
 		},
 		{
 			"key": "usuario_senha_cliente",
-			"value": "cliente",
-			"type": "string"
+			"value": "cliente"
+		},
+		{
+			"key": "restaurante_id",
+			"value": ""
+		},
+		{
+			"key": "cardapio_item_id",
+			"value": ""
 		}
 	]
 }
