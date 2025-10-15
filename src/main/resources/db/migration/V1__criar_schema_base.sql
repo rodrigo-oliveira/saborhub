@@ -1,6 +1,3 @@
-
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
 CREATE TABLE IF NOT EXISTS perfis (
     id   integer PRIMARY KEY,
     nome text NOT NULL
