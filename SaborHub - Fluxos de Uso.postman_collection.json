@@ -1016,6 +1016,48 @@
 			"name": "Fluxo 3: Acesso do Cliente",
 			"item": [
 				{
+					"name": "3.1 Cliente realiza cadastro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Cliente Teste 2\",\n    \"email\": \"cliente-teste@email.com\",\n    \"login\": \"cliente2\",\n    \"senha\": \"{{usuario_senha_cliente}}\",\n    \"perfil\": \"CLIENTE\",\n    \"endereco\": {\n        \"rua\": \"Rua das Palmeiras, 21\",\n        \"bairro\": \"Centro\",\n        \"cidade\": \"São Paulo\",\n        \"estado\": \"SP\",\n        \"cep\": \"30110051\",\n        \"numero\": \"31\",\n        \"complemento\": \"Casa\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "3.1 Cliente realiza login",
 					"event": [
 						{
@@ -1048,7 +1090,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"login\": \"{{usuario_login_cliente}}\",\n    \"senha\": \"{{usuario_senha_cliente}}\"\n}",
+							"raw": "{\n    \"login\": \"cliente2\",\n    \"senha\": \"{{usuario_senha_cliente}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1286,9 +1328,13 @@
 									"    let usuario_cliente_id = responseData.filter(function(item) {",
 									"        return item.login === 'cliente';",
 									"    });",
+									"    let usuario_cliente_2_id = responseData.filter(function(item) {",
+									"        return item.login === 'cliente2';",
+									"    });",
 									"",
 									"    pm.environment.set(\"usuario_restaurante_id\", usuario_restaurante_id ? usuario_restaurante_id[0].id : 0);",
 									"    pm.environment.set(\"usuario_cliente_id\", usuario_cliente_id ? usuario_cliente_id[0].id : 0);",
+									"    pm.environment.set(\"usuario_cliente_2_id\", usuario_cliente_2_id ? usuario_cliente_2_id[0].id : 0);",
 									"}",
 									""
 								],
@@ -1485,6 +1531,34 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "4.6 Administrador remove o usuário do cliente 2",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario/{{usuario_cliente_2_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"{{usuario_cliente_2_id}}"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -1562,6 +1636,10 @@
 		{
 			"key": "usuario_cliente_id",
 			"value": "0"
+		},
+		{
+			"key": "usuario_cliente_2_id",
+			"value": ""
 		},
 		{
 			"key": "usuario_login_admin",

@@ -15,6 +15,8 @@ O projeto tem como objetivo criar um sistema de gestão compartilhado para atend
 O sistema contará com três tipos de usuários — administrador, dono de restaurante e cliente — cada um com informações como nome, e-mail, login, senha, data da última alteração e endereço.
 A solução foi desenvolvida para execução em ambiente Docker, utilizando Docker Compose e um banco de dados relacional PostgreSQL, garantindo escalabilidade e facilidade de implantação.
 
+Vídeo de apresentação do projeto: https://www.youtube.com/watch?v=BAVArNslJ78
+
 ## Tecnologias Utilizadas
 
 - Java 21
