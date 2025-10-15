@@ -3,18 +3,19 @@ package com.saborhub.infra.controller;
 import com.saborhub.application.dto.AtualizarItemCardapioDto;
 import com.saborhub.application.dto.AtualizarRestauranteDto;
 import com.saborhub.application.dto.ItemCardapioDto;
-import com.saborhub.application.dto.ObterRestaurante;
 import com.saborhub.application.dto.RegistroItemCardapioDto;
 import com.saborhub.application.dto.RegistroRestauranteDto;
 import com.saborhub.application.dto.RestauranteDto;
-import com.saborhub.application.usecases.AtualizarItemCardapio;
-import com.saborhub.application.usecases.AtualizarRestaurante;
-import com.saborhub.application.usecases.DeletarItemCardapio;
-import com.saborhub.application.usecases.DeletarRestaurante;
-import com.saborhub.application.usecases.ListarItensCardapio;
-import com.saborhub.application.usecases.ListarRestaurantes;
-import com.saborhub.application.usecases.RegistrarItemCardapio;
-import com.saborhub.application.usecases.RegistrarRestaurante;
+import com.saborhub.application.usecases.AtualizarItemCardapioUseCase;
+import com.saborhub.application.usecases.AtualizarRestauranteUseCase;
+import com.saborhub.application.usecases.DeletarItemCardapioUseCase;
+import com.saborhub.application.usecases.DeletarRestauranteUseCase;
+import com.saborhub.application.usecases.ListarItensCardapioUseCase;
+import com.saborhub.application.usecases.ListarRestaurantesUseCase;
+import com.saborhub.application.usecases.ObterItemCardapioUseCase;
+import com.saborhub.application.usecases.ObterRestauranteUseCase;
+import com.saborhub.application.usecases.RegistrarItemCardapioUseCase;
+import com.saborhub.application.usecases.RegistrarRestauranteUseCase;
 import com.saborhub.domain.entities.ItemCardapio;
 import com.saborhub.infra.persistence.RestauranteEntity;
 import com.saborhub.infra.persistence.UsuarioEntity;
@@ -32,28 +33,30 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/restaurante")
 public class RestauranteController {
-    private final ListarRestaurantes listar;
-    private final ObterRestaurante obter;
-    private final DeletarRestaurante deletar;
-    private final RegistrarRestaurante registrar;
-    private final AtualizarRestaurante atualizar;
-    private final RegistrarItemCardapio registrarItemCardapio;
-    private final ListarItensCardapio listarItensCardapio;
-    private final AtualizarItemCardapio atualizarItemCardapio;
-    private final DeletarItemCardapio deletarItemCardapio;
+    private final ListarRestaurantesUseCase listar;
+    private final ObterRestauranteUseCase obter;
+    private final DeletarRestauranteUseCase deletar;
+    private final RegistrarRestauranteUseCase registrar;
+    private final AtualizarRestauranteUseCase atualizar;
+    private final RegistrarItemCardapioUseCase registrarItemCardapio;
+    private final ListarItensCardapioUseCase listarItensCardapio;
+    private final ObterItemCardapioUseCase obterItemCardapio;
+    private final AtualizarItemCardapioUseCase atualizarItemCardapio;
+    private final DeletarItemCardapioUseCase deletarItemCardapio;
     private final RestauranteRepository repository;
     private final UsuarioRepository usuarioRepository;
 
     public RestauranteController(
-            ListarRestaurantes listar,
-            ObterRestaurante obter,
-            DeletarRestaurante deletar,
-            RegistrarRestaurante registrar,
-            AtualizarRestaurante atualizar,
-            RegistrarItemCardapio registrarItemCardapio,
-            ListarItensCardapio listarItensCardapio,
-            AtualizarItemCardapio atualizarItemCardapio,
-            DeletarItemCardapio deletarItemCardapio,
+            ListarRestaurantesUseCase listar,
+            ObterRestauranteUseCase obter,
+            DeletarRestauranteUseCase deletar,
+            RegistrarRestauranteUseCase registrar,
+            AtualizarRestauranteUseCase atualizar,
+            RegistrarItemCardapioUseCase registrarItemCardapio,
+            ListarItensCardapioUseCase listarItensCardapio,
+            ObterItemCardapioUseCase obterItemCardapio,
+            AtualizarItemCardapioUseCase atualizarItemCardapio,
+            DeletarItemCardapioUseCase deletarItemCardapio,
             RestauranteRepository repository,
             UsuarioRepository usuarioRepository
     ) {
@@ -64,6 +67,7 @@ public class RestauranteController {
         this.atualizar = atualizar;
         this.registrarItemCardapio = registrarItemCardapio;
         this.listarItensCardapio = listarItensCardapio;
+        this.obterItemCardapio = obterItemCardapio;
         this.atualizarItemCardapio = atualizarItemCardapio;
         this.deletarItemCardapio = deletarItemCardapio;
         this.repository = repository;
@@ -86,7 +90,7 @@ public class RestauranteController {
         
         String donoId = usuario.getId();
 
-        RestauranteEntity salvo = registrar.executar(dto, donoId);
+        com.saborhub.domain.entities.Restaurante salvo = registrar.executar(dto, donoId);
         RestauranteDto body = new RestauranteDto(
                 salvo.getId(),
                 salvo.getCnpj(),
@@ -125,17 +129,19 @@ public class RestauranteController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RestauranteDto> obterRestaurante(@PathVariable String id) {
-        RestauranteEntity e = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Restaurante not found: " + id));
+        com.saborhub.domain.entities.Restaurante restaurante = obter.obterPorId(id);
+        if (restaurante == null) {
+            return ResponseEntity.notFound().build();
+        }
 
         RestauranteDto body = new RestauranteDto(
-                e.getId(),
-                e.getCnpj(),
-                e.getNome(),
-                e.getEndereco(),
-                e.getTipoCozinha(),
-                e.getHorarioFuncionamento(),
-                e.getDonoId()
+                restaurante.getId(),
+                restaurante.getCnpj(),
+                restaurante.getNome(),
+                restaurante.getEndereco(),
+                restaurante.getTipoCozinha(),
+                restaurante.getHorarioFuncionamento(),
+                restaurante.getDonoId()
         );
         return ResponseEntity.ok(body);
     }
@@ -153,7 +159,7 @@ public class RestauranteController {
             @PathVariable String id,
             @RequestBody AtualizarRestauranteDto payload
     ) {
-        RestauranteEntity salvo = atualizar.atualizar(id, payload);
+        com.saborhub.domain.entities.Restaurante salvo = atualizar.atualizar(id, payload);
         RestauranteDto body = new RestauranteDto(
                 salvo.getId(),
                 salvo.getCnpj(),
@@ -191,6 +197,46 @@ public class RestauranteController {
                 .collect(Collectors.toList());
         
         return ResponseEntity.ok(itensDto);
+    }
+
+    @GetMapping("/{restauranteId}/cardapio/{itemId}")
+    public ResponseEntity<ItemCardapioDto> obterItemCardapio(
+            @PathVariable String restauranteId,
+            @PathVariable String itemId
+    ) {
+        // Verificar se o restaurante existe
+        if (!repository.existsById(restauranteId)) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        try {
+            UUID itemUuid = UUID.fromString(itemId);
+            ItemCardapio item = obterItemCardapio.obterPorId(itemUuid);
+            
+            if (item == null) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            // Verificar se o item pertence ao restaurante especificado
+            UUID restauranteUuid = UUID.fromString(restauranteId);
+            if (!item.getRestauranteId().equals(restauranteUuid)) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            ItemCardapioDto itemDto = new ItemCardapioDto(
+                    item.getId(),
+                    item.getNome(),
+                    item.getDescricao(),
+                    item.getPreco(),
+                    item.isDisponivelSomenteNoLocal(),
+                    item.getCaminhoFoto(),
+                    item.getRestauranteId()
+            );
+            
+            return ResponseEntity.ok(itemDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/{restauranteId}/cardapio")

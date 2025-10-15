@@ -3,15 +3,13 @@ package com.saborhub.application.usecases;
 import com.saborhub.application.gateways.ItemCardapioRepositoryInterface;
 import com.saborhub.domain.entities.ItemCardapio;
 import com.saborhub.domain.exceptions.RecursoNaoEncontradoException;
-import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-@Service
-public class DeletarItemCardapio {
+public class DeletarItemCardapioUseCase {
     private final ItemCardapioRepositoryInterface repository;
 
-    public DeletarItemCardapio(ItemCardapioRepositoryInterface repository) {
+    public DeletarItemCardapioUseCase(ItemCardapioRepositoryInterface repository) {
         this.repository = repository;
     }
 

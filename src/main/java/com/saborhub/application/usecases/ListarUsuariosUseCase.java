@@ -5,11 +5,11 @@ import com.saborhub.domain.entities.Usuario;
 
 import java.util.List;
 
-public class ListarUsuarios {
+public class ListarUsuariosUseCase {
 
     private final UsuarioRepositoryInterface repositorio;
 
-    public ListarUsuarios(UsuarioRepositoryInterface repositorio) {
+    public ListarUsuariosUseCase(UsuarioRepositoryInterface repositorio) {
         this.repositorio = repositorio;
     }
 

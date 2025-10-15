@@ -1,26 +1,25 @@
 package com.saborhub.application.usecases;
 
 import com.saborhub.application.dto.RegistroRestauranteDto;
-import com.saborhub.infra.persistence.RestauranteEntity;
-import com.saborhub.infra.repository.RestauranteRepository;
-import org.springframework.stereotype.Service;
+import com.saborhub.application.gateways.RestauranteRepositoryInterface;
+import com.saborhub.domain.entities.Restaurante;
 
-@Service
-public class RegistrarRestaurante {
-    private final RestauranteRepository repository;
+public class RegistrarRestauranteUseCase {
+    private final RestauranteRepositoryInterface repository;
 
-    public RegistrarRestaurante(RestauranteRepository repository) {
+    public RegistrarRestauranteUseCase(RestauranteRepositoryInterface repository) {
         this.repository = repository;
     }
 
-    public RestauranteEntity executar(RegistroRestauranteDto dto, String donoId) {
-        RestauranteEntity e = new RestauranteEntity();
-        e.setCnpj(dto.cnpj());
-        e.setNome(dto.nome());
-        e.setEndereco(dto.endereco());
-        e.setTipoCozinha(dto.tipoCozinha());
-        e.setHorarioFuncionamento(dto.horarioFuncionamento());
-        e.setDonoId(donoId);
-        return repository.save(e);
+    public Restaurante executar(RegistroRestauranteDto dto, String donoId) {
+        Restaurante restaurante = new Restaurante(
+                dto.cnpj(),
+                dto.nome(),
+                dto.endereco(),
+                dto.tipoCozinha(),
+                dto.horarioFuncionamento(),
+                donoId
+        );
+        return repository.save(restaurante);
     }
 }

@@ -3,15 +3,13 @@ package com.saborhub.application.usecases;
 import com.saborhub.application.dto.RegistroItemCardapioDto;
 import com.saborhub.application.gateways.ItemCardapioRepositoryInterface;
 import com.saborhub.domain.entities.ItemCardapio;
-import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-@Service
-public class RegistrarItemCardapio {
+public class RegistrarItemCardapioUseCase {
     private final ItemCardapioRepositoryInterface repository;
 
-    public RegistrarItemCardapio(ItemCardapioRepositoryInterface repository) {
+    public RegistrarItemCardapioUseCase(ItemCardapioRepositoryInterface repository) {
         this.repository = repository;
     }
 

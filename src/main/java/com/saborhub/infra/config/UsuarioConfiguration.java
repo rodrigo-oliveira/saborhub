@@ -1,10 +1,10 @@
 package com.saborhub.infra.config;
 
 import com.saborhub.application.gateways.UsuarioRepositoryInterface;
-import com.saborhub.application.usecases.DeletarUsuario;
-import com.saborhub.application.usecases.ListarUsuarios;
-import com.saborhub.application.usecases.ObterUsuario;
-import com.saborhub.application.usecases.RegistrarUsuario;
+import com.saborhub.application.usecases.DeletarUsuarioUseCase;
+import com.saborhub.application.usecases.ListarUsuariosUseCase;
+import com.saborhub.application.usecases.ObterUsuarioUseCase;
+import com.saborhub.application.usecases.RegistrarUsuarioUseCase;
 import com.saborhub.infra.gateways.UsuarioEntityMapper;
 import com.saborhub.infra.gateways.UsuarioEntityRepository;
 import com.saborhub.infra.repository.UsuarioRepository;
@@ -20,18 +20,18 @@ public class UsuarioConfiguration {
     }
 
     @Bean
-    ListarUsuarios listarUsuarios(UsuarioRepositoryInterface repository) {
-        return new ListarUsuarios(repository);
+    ListarUsuariosUseCase listarUsuarios(UsuarioRepositoryInterface repository) {
+        return new ListarUsuariosUseCase(repository);
     }
 
     @Bean
-    ObterUsuario obterUsuario(UsuarioRepositoryInterface repository) {
-        return new ObterUsuario(repository);
+    ObterUsuarioUseCase obterUsuario(UsuarioRepositoryInterface repository) {
+        return new ObterUsuarioUseCase(repository);
     }
 
     @Bean
-    RegistrarUsuario registrarUsuario(UsuarioRepositoryInterface repository, PasswordEncoder passwordEncoder) {
-        return new RegistrarUsuario(repository, passwordEncoder);
+    RegistrarUsuarioUseCase registrarUsuario(UsuarioRepositoryInterface repository, PasswordEncoder passwordEncoder) {
+        return new RegistrarUsuarioUseCase(repository, passwordEncoder);
     }
 
     @Bean
@@ -40,7 +40,7 @@ public class UsuarioConfiguration {
     }
 
     @Bean
-    public DeletarUsuario deletarUsuario(UsuarioRepositoryInterface repository) {
-        return new DeletarUsuario(repository);
+    public DeletarUsuarioUseCase deletarUsuario(UsuarioRepositoryInterface repository) {
+        return new DeletarUsuarioUseCase(repository);
     }
 }

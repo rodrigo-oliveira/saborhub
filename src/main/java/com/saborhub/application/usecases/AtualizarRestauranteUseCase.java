@@ -1,35 +1,37 @@
 package com.saborhub.application.usecases;
 
 import com.saborhub.application.dto.AtualizarRestauranteDto;
-import com.saborhub.infra.persistence.RestauranteEntity;
-import com.saborhub.infra.repository.RestauranteRepository;
-import org.springframework.stereotype.Service;
+import com.saborhub.application.gateways.RestauranteRepositoryInterface;
+import com.saborhub.domain.entities.Restaurante;
+import com.saborhub.domain.exceptions.RecursoNaoEncontradoException;
 
-@Service
-public class AtualizarRestaurante {
-    private final RestauranteRepository repository;
+public class AtualizarRestauranteUseCase {
+    private final RestauranteRepositoryInterface repository;
 
-    public AtualizarRestaurante(RestauranteRepository repository) {
+    public AtualizarRestauranteUseCase(RestauranteRepositoryInterface repository) {
         this.repository = repository;
     }
 
-    public RestauranteEntity atualizar(String id, AtualizarRestauranteDto dto) {
-        RestauranteEntity e = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Restaurante not found: " + id));
+    public Restaurante atualizar(String id, AtualizarRestauranteDto dto) {
+        Restaurante restauranteExistente = repository.obterPorId(id);
+        if (restauranteExistente == null) {
+            throw new RecursoNaoEncontradoException("Restaurante não encontrado: " + id);
+        }
 
+        // Atualizar apenas os campos que foram fornecidos
         if (dto.nome() != null && !dto.nome().isBlank()) {
-            e.setNome(dto.nome());
+            restauranteExistente.setNome(dto.nome());
         }
         if (dto.endereco() != null) {
-            e.setEndereco(dto.endereco());
+            restauranteExistente.setEndereco(dto.endereco());
         }
         if (dto.tipoCozinha() != null) {
-            e.setTipoCozinha(dto.tipoCozinha());
+            restauranteExistente.setTipoCozinha(dto.tipoCozinha());
         }
         if (dto.horarioFuncionamento() != null) {
-            e.setHorarioFuncionamento(dto.horarioFuncionamento());
+            restauranteExistente.setHorarioFuncionamento(dto.horarioFuncionamento());
         }
 
-        return repository.save(e);
+        return repository.save(restauranteExistente);
     }
 }

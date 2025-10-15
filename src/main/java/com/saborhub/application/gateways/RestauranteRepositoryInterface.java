@@ -6,8 +6,10 @@ import java.util.List;
 
 public interface RestauranteRepositoryInterface {
     Restaurante obterPeloCnpj(String cnpj);
+    
+    Restaurante obterPorId(String id);
 
-    void save(Restaurante restaurante);
+    Restaurante save(Restaurante restaurante);
 
     List<Restaurante> listarTodos();
 

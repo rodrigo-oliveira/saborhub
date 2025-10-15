@@ -2,10 +2,10 @@ package com.saborhub.application.usecases;
 
 import com.saborhub.application.gateways.UsuarioRepositoryInterface;
 
-public class DeletarUsuario {
+public class DeletarUsuarioUseCase {
     private final UsuarioRepositoryInterface repositorioUsuario;
 
-    public DeletarUsuario(UsuarioRepositoryInterface repositorioUsuario) {
+    public DeletarUsuarioUseCase(UsuarioRepositoryInterface repositorioUsuario) {
         this.repositorioUsuario = repositorioUsuario;
     }
 

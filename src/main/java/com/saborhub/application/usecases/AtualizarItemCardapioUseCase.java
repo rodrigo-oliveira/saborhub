@@ -4,15 +4,13 @@ import com.saborhub.application.dto.AtualizarItemCardapioDto;
 import com.saborhub.application.gateways.ItemCardapioRepositoryInterface;
 import com.saborhub.domain.entities.ItemCardapio;
 import com.saborhub.domain.exceptions.RecursoNaoEncontradoException;
-import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-@Service
-public class AtualizarItemCardapio {
+public class AtualizarItemCardapioUseCase {
     private final ItemCardapioRepositoryInterface repository;
 
-    public AtualizarItemCardapio(ItemCardapioRepositoryInterface repository) {
+    public AtualizarItemCardapioUseCase(ItemCardapioRepositoryInterface repository) {
         this.repository = repository;
     }
 

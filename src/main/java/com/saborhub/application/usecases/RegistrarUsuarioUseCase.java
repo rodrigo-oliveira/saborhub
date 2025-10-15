@@ -6,12 +6,12 @@ import com.saborhub.domain.entities.Usuario;
 import com.saborhub.domain.exceptions.UsuarioJaExisteException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class RegistrarUsuario {
+public class RegistrarUsuarioUseCase {
 
     private final UsuarioRepositoryInterface repositorioUsuario;
     private final PasswordEncoder passwordEncoder;
 
-    public RegistrarUsuario(UsuarioRepositoryInterface repositorioUsuario, PasswordEncoder passwordEncoder) {
+    public RegistrarUsuarioUseCase(UsuarioRepositoryInterface repositorioUsuario, PasswordEncoder passwordEncoder) {
         this.repositorioUsuario = repositorioUsuario;
         this.passwordEncoder = passwordEncoder;
     }

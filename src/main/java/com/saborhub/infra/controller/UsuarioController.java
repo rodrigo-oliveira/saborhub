@@ -4,10 +4,10 @@ import com.saborhub.application.dto.AlterarSenhaDto;
 import com.saborhub.application.dto.AtualizarUsuarioDto;
 import com.saborhub.application.dto.RegistroUsuarioDto;
 import com.saborhub.application.dto.UsuarioDto;
-import com.saborhub.application.usecases.DeletarUsuario;
-import com.saborhub.application.usecases.ListarUsuarios;
-import com.saborhub.application.usecases.ObterUsuario;
-import com.saborhub.application.usecases.RegistrarUsuario;
+import com.saborhub.application.usecases.DeletarUsuarioUseCase;
+import com.saborhub.application.usecases.ListarUsuariosUseCase;
+import com.saborhub.application.usecases.ObterUsuarioUseCase;
+import com.saborhub.application.usecases.RegistrarUsuarioUseCase;
 import com.saborhub.domain.entities.Usuario;
 import com.saborhub.infra.persistence.UsuarioEntity;
 import com.saborhub.infra.repository.UsuarioRepository;
@@ -23,18 +23,18 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
-    private final ListarUsuarios listarUsuarios;
-    private final ObterUsuario obterUsuario;
-    private final DeletarUsuario deletarUsuario;
-    private final RegistrarUsuario registrarUsuario;
+    private final ListarUsuariosUseCase listarUsuarios;
+    private final ObterUsuarioUseCase obterUsuario;
+    private final DeletarUsuarioUseCase deletarUsuario;
+    private final RegistrarUsuarioUseCase registrarUsuario;
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UsuarioController(
-            ListarUsuarios listarUsuarios,
-            ObterUsuario obterUsuario,
-            DeletarUsuario deletarUsuario,
-            RegistrarUsuario registrarUsuario,
+            ListarUsuariosUseCase listarUsuarios,
+            ObterUsuarioUseCase obterUsuario,
+            DeletarUsuarioUseCase deletarUsuario,
+            RegistrarUsuarioUseCase registrarUsuario,
             UsuarioRepository usuarioRepository,
             PasswordEncoder passwordEncoder
     ) {

@@ -3,17 +3,17 @@ package com.saborhub.application.usecases;
 import com.saborhub.application.gateways.ItemCardapioRepositoryInterface;
 import com.saborhub.domain.entities.ItemCardapio;
 
-import java.util.List;
 import java.util.UUID;
 
-public class ListarItensCardapioUseCase {
+public class ObterItemCardapioUseCase {
+
     private final ItemCardapioRepositoryInterface repository;
 
-    public ListarItensCardapioUseCase(ItemCardapioRepositoryInterface repository) {
+    public ObterItemCardapioUseCase(ItemCardapioRepositoryInterface repository) {
         this.repository = repository;
     }
 
-    public List<ItemCardapio> listarPorRestaurante(UUID restauranteId) {
-        return repository.listarPorRestaurante(restauranteId);
+    public ItemCardapio obterPorId(UUID id) {
+        return this.repository.obterPorId(id);
     }
 }

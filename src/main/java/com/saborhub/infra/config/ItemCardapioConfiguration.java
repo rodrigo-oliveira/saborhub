@@ -1,8 +1,11 @@
 package com.saborhub.infra.config;
 
 import com.saborhub.application.gateways.ItemCardapioRepositoryInterface;
-import com.saborhub.application.usecases.ListarItensCardapio;
-import com.saborhub.application.usecases.RegistrarItemCardapio;
+import com.saborhub.application.usecases.AtualizarItemCardapioUseCase;
+import com.saborhub.application.usecases.DeletarItemCardapioUseCase;
+import com.saborhub.application.usecases.ListarItensCardapioUseCase;
+import com.saborhub.application.usecases.ObterItemCardapioUseCase;
+import com.saborhub.application.usecases.RegistrarItemCardapioUseCase;
 import com.saborhub.infra.gateways.ItemCardapioEntityMapper;
 import com.saborhub.infra.gateways.ItemCardapioEntityRepository;
 import com.saborhub.infra.repository.ItemCardapioRepository;
@@ -21,13 +24,28 @@ public class ItemCardapioConfiguration {
     }
 
     @Bean
-    RegistrarItemCardapio registrarItemCardapio(ItemCardapioRepositoryInterface repository) {
-        return new RegistrarItemCardapio(repository);
+    RegistrarItemCardapioUseCase registrarItemCardapio(ItemCardapioRepositoryInterface repository) {
+        return new RegistrarItemCardapioUseCase(repository);
     }
 
     @Bean
-    ListarItensCardapio listarItensCardapio(ItemCardapioRepositoryInterface repository) {
-        return new ListarItensCardapio(repository);
+    AtualizarItemCardapioUseCase atualizarItemCardapio(ItemCardapioRepositoryInterface repository) {
+        return new AtualizarItemCardapioUseCase(repository);
+    }
+
+    @Bean
+    DeletarItemCardapioUseCase deletarItemCardapio(ItemCardapioRepositoryInterface repository) {
+        return new DeletarItemCardapioUseCase(repository);
+    }
+
+    @Bean
+    ListarItensCardapioUseCase listarItensCardapio(ItemCardapioRepositoryInterface repository) {
+        return new ListarItensCardapioUseCase(repository);
+    }
+
+    @Bean
+    ObterItemCardapioUseCase obterItemCardapio(ItemCardapioRepositoryInterface repository) {
+        return new ObterItemCardapioUseCase(repository);
     }
 
     @Bean

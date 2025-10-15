@@ -1,20 +1,19 @@
 package com.saborhub.application.usecases;
 
-import com.saborhub.infra.repository.RestauranteRepository;
-import org.springframework.stereotype.Service;
+import com.saborhub.application.gateways.RestauranteRepositoryInterface;
+import com.saborhub.domain.exceptions.RecursoNaoEncontradoException;
 
-@Service
-public class DeletarRestaurante {
-    private final RestauranteRepository repository;
+public class DeletarRestauranteUseCase {
+    private final RestauranteRepositoryInterface repository;
 
-    public DeletarRestaurante(RestauranteRepository repository) {
+    public DeletarRestauranteUseCase(RestauranteRepositoryInterface repository) {
         this.repository = repository;
     }
 
     public void deletar(String id) {
-        if (!repository.existsById(id)) {
-            throw new IllegalArgumentException("Restaurante não existe: " + id);
+        if (repository.obterPorId(id) == null) {
+            throw new RecursoNaoEncontradoException("Restaurante não encontrado: " + id);
         }
-        repository.deleteById(id);
+        repository.deletar(id);
     }
 }
